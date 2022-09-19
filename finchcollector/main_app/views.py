@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .forms import FeedingForm
 
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,7 +20,11 @@ def about(request):
 
 @login_required
 def finch_index(request):
-  finch = Finch.objects.all()
+  # User = get_user_model()
+  # users = User.objects.all()[2]
+  print(request.user)
+  finch = Finch.objects.filter(user=request.user)
+
   return render(request, 'finch/index.html', { 'finch': finch })
 
 @login_required
